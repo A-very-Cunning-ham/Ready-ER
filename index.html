@@ -1,0 +1,204 @@
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">Ready ER</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="index.html">Patient Check In <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="about.html">About </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+
+  <div class="mx-4 my-4">
+    <div class="card-columns" id="deck">
+
+    </div>
+  </div>
+
+
+  <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="model-body">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-4" id="name">
+                        Name:
+                    </div>
+                    <div class="col-md-4" id="idpic">
+                        ID Picture: <img style="width:100%;" src="yoink.jpg">
+                    </div>
+                    <div class="col-md-4" id="inspic">
+                        Insurance Picture: <img style="width:100%;" src="yoink.jpg">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4" id="ssn">
+                        SSN:
+                    </div>
+                    <div class="col-md-4" id="age">
+                        Age:
+                    </div>
+                    <div class="col-md-4" id="sex">
+                        Sex:
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4" id="weight">
+                        Weight:
+                    </div>
+                    <div class="col-md-4" id="emcont">
+                        Emergency Contact:
+                    </div>
+                    <div class="col-md-4" id="pastcon">
+                        Past Conditions:
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4" id="aller">
+                        Allergies:
+                    </div>
+                    <div class="col-md-4" id="currmed">
+                        Current Medications:
+                    </div>
+                    <div class="col-md-4" id="detailedsympt">
+                        Detailed Symptoms:
+                    </div>
+                </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.8.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.8.3/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBEiAXkxnCk26GBmoFDe2X_RPVfQ875eBU",
+    authDomain: "readyer-932ee.firebaseapp.com",
+    databaseURL: "https://readyer-932ee.firebaseio.com",
+    projectId: "readyer-932ee",
+    storageBucket: "readyer-932ee.appspot.com",
+    messagingSenderId: "699354410194"
+  };
+  firebase.initializeApp(config);
+
+  var db = firebase.firestore();
+
+  db.collection("Users").onSnapshot(function(querySnapshot) {
+          users = [];
+          $("#deck").empty();
+          querySnapshot.forEach(function(doc) {
+              users.push(doc.data());
+              appendText(doc.data(), users.length-1);
+          });
+          console.log(users);
+
+      });
+
+
+
+  // db.collection("Users").doc("x2smeclW4kiwhCwjfKKo")
+  //     .onSnapshot(function(doc) {
+  //         console.log("Current data: ", doc.data());
+  //         appendText(doc.data());
+  //     });
+
+  // <div class="card" style="width: 18rem;">
+  //  <div class="card-header">
+  //    Time Stamp
+  //  </div>
+  //  <img class="card-img-top" src="Images\ID.jpg" alt="Card image cap">
+  //  <div class="card-body">
+  //    <h5 class="card-title">Gusto Gav</h5>
+  //    <p class="card-text">Symptoms: Fucking Sick </p>
+  //  </div>
+
+  function appendText(userData, index) {
+      var txt = "<div class=\"card h-25\" id=\"" +index+ "\">"+
+     "<a class=\"button\" style=\"position: absolute; top: 0; left: 0; height: 100%; width: 100%;\">" +
+     "<div class=\"card-header\">"+
+       "TimePlacehold" +
+     "</div>"+
+  //   <img class=\"card-img-top\" src=\"Images\ID.jpg\" alt=\"Card image cap\">
+     "<div class=\"card-body\">"+
+       "<h5 class=\"card-title\">"+ userData["Name"] +"</h5>"+
+       "<p class=\"card-text\">"+ userData["Symptoms"] +"</p>"+
+       "<button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\".bd-example-modal-lg\" data-index=\"" + index + "\">Detailed Info</button>" +
+     "</div>"
+
+    $("#deck").append(txt);   // Append new elements
+  }
+
+
+  $('.bd-example-modal-lg').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var array =  users[Number(button.data('index'))];// Extract info from data-* attributes
+        console.log(Number(button.data('index')));
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        // remember to update fields accordingly
+        modal.find('#name').append(array["Name"]);
+        modal.find('#ssn').append(array["Social Security Number"]);
+        modal.find('#age').append(array["Age"]);
+        modal.find('#sex').append(array["Sex"]);
+        modal.find('#weight').append(array["Weight"]);
+        modal.find('#emcont').append(array["Emergency Contact"]);
+        // past and current conditions might not fit - theres a medical history field
+        modal.find('#pastcon').append(array["Past Conditions"]);
+        modal.find('#aller').append(array["Allergies"]);
+        modal.find('#currmed').append(array["Medication:"]);
+        // detailed symptoms should include comments input by user
+        modal.find('#detailedsympt').append(array["Symptoms"]);
+    });
+
+    $('.bd-example-modal-lg').on('hide.bs.modal', function (event) {
+      var button = $(event.relatedTarget); // Button that triggered the modal
+      var array =  users[Number(button.data('index'))];// Extract info from data-* attributes
+      console.log(Number(button.data('index')));
+      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+      var modal = $(this)
+      // remember to update fields accordingly
+      modal.find('#name').text("Name: ")
+      modal.find('#ssn').text("SSN: ")
+      modal.find('#age').text("Age: ")
+      modal.find('#sex').text("Sex: ")
+      modal.find('#weight').text("Weight: ");
+      modal.find('#emcont').text("Emergency Contact: ")
+      // past and current conditions might not fit - theres a medical history field
+      modal.find('#pastcon').text("Past Conditions: ")
+      modal.find('#aller').text("Allergies: ")
+      modal.find('#currmed').text("Current Medications: ")
+      // detailed symptoms should include comments input by user
+      modal.find('#detailedsympt').text("Detailed Symptoms: ")
+  });
+//"<div class=\"card bg-primary\"><div class=\"card-body text-center\"><p>"+userData["name"]+"</p></div></div>"; // Create text with HTML
+
+</script>
