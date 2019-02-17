@@ -1,5 +1,7 @@
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="style.css">
+
 
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -9,7 +11,6 @@
 
 <!-- Latest compiled JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
-
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a class="navbar-brand" href="#">Ready ER</a>
@@ -46,10 +47,10 @@
                         Name:
                     </div>
                     <div class="col-md-4" id="idpic">
-                        ID Picture: <img style="width:100%;" src="yoink.jpg">
+                        ID Picture:
                     </div>
                     <div class="col-md-4" id="inspic">
-                        Insurance Picture: <img style="width:100%;" src="yoink.jpg">
+                        Insurance Picture:
                     </div>
                 </div>
                 <div class="row">
@@ -140,17 +141,17 @@
   //  </div>
 
   function appendText(userData, index) {
-      var txt = "<div class=\"card h-25\" id=\"" +index+ "\">"+
-     "<a class=\"button\" style=\"position: absolute; top: 0; left: 0; height: 100%; width: 100%;\">" +
+      var txt = "<div class=\"card border-info mb-3 h-auto \" id=\"" +index+ "\">"+
+     // "<a class=\"button\" style=\"position: absolute; top: 0; left: 0; height: 100%; width: 100%;\">" +
      "<div class=\"card-header\">"+
-       "TimePlacehold" +
+       userData["Date"] +
      "</div>"+
-  //   <img class=\"card-img-top\" src=\"Images\ID.jpg\" alt=\"Card image cap\">
-     "<div class=\"card-body\">"+
+  //   "<img class=\"card-img-top\" src=\"https://firebasestorage.googleapis.com/v0/b/readyer-932ee.appspot.com/o/healthUserInsurance.jpeg?alt=media&token=18bf116f-23a3-4676-afdb-42078eae6459\" alt=\"Card image cap\" style=\"width 50%\">"
+     "<div class=\"card-body text-info\">"+
        "<h5 class=\"card-title\">"+ userData["Name"] +"</h5>"+
        "<p class=\"card-text\">"+ userData["Symptoms"] +"</p>"+
-       "<button type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\".bd-example-modal-lg\" data-index=\"" + index + "\">Detailed Info</button>" +
-     "</div>"
+       "<button type=\"button\" class=\"btn btn-secondary\" data-toggle=\"modal\" data-target=\".bd-example-modal-lg\" data-index=\"" + index + "\">Detailed Info</button>" +
+     "</div></div>"
 
     $("#deck").append(txt);   // Append new elements
   }
@@ -168,6 +169,8 @@
         modal.find('#ssn').append(array["Social Security Number"]);
         modal.find('#age').append(array["Age"]);
         modal.find('#sex').append(array["Sex"]);
+        modal.find("#idpic").append("<img style=\"width:100%;\" src=\"https://firebasestorage.googleapis.com/v0/b/readyer-932ee.appspot.com/o/idImagepatients-" + encodeURIComponent(array["Name"]) + ".jpeg?alt=media&token=18bf116f-23a3-4676-afdb-42078eae6459\">")
+        modal.find("#inspic").append("<img style=\"width:100%;\" src=\"https://firebasestorage.googleapis.com/v0/b/readyer-932ee.appspot.com/o/healthUserInsurance-" + encodeURIComponent(array["Name"]) + ".jpeg?alt=media&token=18bf116f-23a3-4676-afdb-42078eae6459\">")
         modal.find('#weight').append(array["Weight"]);
         modal.find('#emcont').append(array["Emergency Contact"]);
         // past and current conditions might not fit - theres a medical history field
@@ -190,6 +193,8 @@
       modal.find('#ssn').text("SSN: ")
       modal.find('#age').text("Age: ")
       modal.find('#sex').text("Sex: ")
+      modal.find("#idpic").text("ID Picture:")
+      modal.find("#inspic").text("Insurance Picture:")
       modal.find('#weight').text("Weight: ");
       modal.find('#emcont').text("Emergency Contact: ")
       // past and current conditions might not fit - theres a medical history field
